@@ -1,37 +1,45 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-// import Productss from "../assests/data";
-
+import { UserDataContext } from "../context/dataContext";
+import '../App.css'
+import AddedProduct from "./AddedProduct";
 const Products = () => {
-  const [Data, setData] = useState([]);
+  const users = useContext(UserDataContext);
+console.log(users)
 
-  const fetchUserData = () => {
-    fetch("https://reqres.in/api/users?page=2")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setData(data.data);
-      });
-  };
+  // useEffect(() => {
+  //   fetchUserData();
 
-  useEffect(() => {
-    fetchUserData();
-
-  }, []);
-  console.log(Data);
-  console.log(typeof Data);
+  // }, []);
+  // console.log(Data);
+  // console.log(typeof Data);
   return (
-    <div>
-      {Data.map((Data) => (
-        <>
-          <li key={Data.id}>{Data.first_name}</li>
-          <Link to={`/products/${Data.id}`}>more info</Link>
-        </>
-      ))}
+    <div className="main">
+      <table class="table">
+  <thead>
+      <tr>
+      <th scope="col"> Id</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">email</th>
+    </tr>
+        </thead>
+        {users?.map((Data) => (
+          <tbody>
+            <tr>
+              <th scope="row">{Data.id}</th>
+              <td>{Data.first_name}</td>
+              <td>{Data.last_name}</td>
+              <td>{Data.email}</td>
+              <td><Link to={`/products/${Data.id}`}>more info</Link></td>
+            </tr>
+          </tbody>
+        ))}
+</table>
+      <div>
+     <AddedProduct/></div>
     </div>
   );
-};
+}
 
 export default Products;

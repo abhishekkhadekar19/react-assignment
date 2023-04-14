@@ -1,34 +1,46 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
+import { UserDataContext } from "../context/dataContext";
+import { useContext } from "react";
 const SingleProduct = () => {
   const { productid } = useParams();
-  const [Data, setData] = useState([]);
+  const users = useContext(UserDataContext);
+// without using context api
+  // const fetchUserData = () => {
+  //   fetch("https://reqres.in/api/users?page=2")
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setData(data.data);
+  //     });
+  // };
 
-  const fetchUserData = () => {
-    fetch("https://reqres.in/api/users?page=2")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setData(data.data);
-      });
-  };
+  // useEffect(() => {
+  //   fetch("https://reqres.in/api/users?page=2")
+  //   .then((response) => {
+  //     return response.json();
+  //   })
+  //   .then((data) => {
+  //     setData(data.data);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const data = Data.find((Data) => Data.id === Number(productid));
+// useEffect(() => {
+//     axios.get('https://reqres.in/api/users?page=2')
+//       .then((res) => res.data)
+//     .then((data) => setData(data.data))
+// }, []);
+  
+  const data = users.find((Data) => Data.id === Number(productid)) || {}; 
   console.log(data);
-  // const { first_name, last_name } = data;
-  const Navigate = useNavigate();
+  const { first_name='', last_name='' } = data;
+
   return (
     <div>
-      {/* {first_name}
-      {last_name} */}
-      <button onClick={() => Navigate("/about")}>dfdfdfdfdf</button>
+      {first_name && <span>{first_name}</span>}
+      {last_name && <span>{last_name}</span>}
     </div>
   );
 };
